@@ -1,0 +1,8 @@
+{
+  "name": "upload-scripts",
+  "version": "1.0.0",
+  "dependencies": {
+    "firebase": "^8.6.1",
+    "googleapis": "^39.2.0"
+  }
+}
