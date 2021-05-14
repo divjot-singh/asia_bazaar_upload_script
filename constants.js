@@ -90,9 +90,9 @@ const CATEGORIES_MAP = {
     id: "pickles",
     name: "Pickles",
     image_url:
-      "https://substantivedebate.xyz/app_pics/category_pics/pickles.jpeg",
+      "https://substantivedebate.xyz/app_pics/category_pics/pickles.png",
     thumb_url:
-      "https://substantivedebate.xyz/app_pics/category_pics/thumbnails/tn_pickles.jpeg",
+      "https://substantivedebate.xyz/app_pics/category_pics/thumbnails/tn_pickles.png",
   },
   produce: {
     id: "produce",

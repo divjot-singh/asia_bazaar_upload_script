@@ -171,7 +171,7 @@ async function main(auth) {
 async function addCategories(auth) {
   for (let key in CATEGORIES_MAP) {
     await firestore.collection("categories").doc(key).update({
-      image_url: CATEGORIES_MAP[key]["image_url"],
+      thumb_url: CATEGORIES_MAP[key]["thumb_url"],
     });
     //await firestore.collection("inventory").doc(key).set({});
     console.log("hhs");
@@ -179,9 +179,9 @@ async function addCategories(auth) {
 }
 async function updateDataToFirebase(auth) {
   const sheets = google.sheets({ version: "v4", auth });
-  //await addCategories(auth);
+  await addCategories(auth);
   //console.log("done");
-  //return;
+  return;
   try {
     sheets.spreadsheets.values.get(
       {
