@@ -163,10 +163,24 @@ function readProductsListSheet(auth) {
     console.log(e);
   }
 }
+async function deleteOrders() {
+  let ordersList = await firestore.collection("orders").get();
+  ordersList.forEach((item) => {
+    firestore.collection("orders").doc(item.id).delete();
+  });
+}
+async function deleteOrderItems() {
+  let ordersList = await firestore.collection("orderItems").get();
+  ordersList.forEach((item) => {
+    firestore.collection("orderItems").doc(item.id).delete();
+  });
+}
 async function main(auth) {
   //const auth = await authorize();
   //readProductsListSheet(auth);
-  updateDataToFirebase(auth);
+  //updateDataToFirebase(auth);
+  deleteOrders();
+  deleteOrderItems();
 }
 async function addCategories(auth) {
   for (let key in CATEGORIES_MAP) {
