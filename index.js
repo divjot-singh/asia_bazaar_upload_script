@@ -175,12 +175,66 @@ async function deleteOrderItems() {
     firestore.collection("orderItems").doc(item.id).delete();
   });
 }
+async function updateItemsQuantityAndImage() {
+  let categories = await firestore.collection("inventory").get();
+  categories.docs.forEach(async (category) => {
+    let categoryName = category.id;
+    let items = await firestore
+      .collection("inventory")
+      .doc(categoryName)
+      .collection("items")
+      .get();
+    items.docs.forEach(async (item) => {
+      let itemId = item.id;
+      let itemData = await firestore
+        .collection("inventory")
+        .doc(categoryName)
+        .collection("items")
+        .doc(itemId)
+        .get();
+      let imageUrl = itemData.data().image_url,
+        imageUrlHq = itemData.data().image_url_hq,
+        newImageUrl = "",
+        newImageHq = "";
+      if (imageUrl) {
+        if (imageUrl.indexOf("https") === -1) {
+          newImageUrl = imageUrl.replace("http", "https");
+        }
+        if (imageUrlHq.indexOf("https") === -1) {
+          newImageHq = imageUrlHq.replace("http", "https");
+        } else {
+          newImageHq = imageUrlHq;
+        }
+        if (imageUrl !== newImageUrl) {
+          await firestore
+            .collection("inventory")
+            .doc(categoryName)
+            .collection("items")
+            .doc(itemId)
+            .update({ image_url: newImageUrl, image_url_hq: newImageHq });
+          console.log("update images for " + itemId + " " + categoryName);
+        } else {
+          console.log("leaving images for " + itemId + " " + categoryName);
+        }
+      } else {
+        await firestore
+          .collection("inventory")
+          .doc(categoryName)
+          .collection("items")
+          .doc(itemId)
+          .update({ quantity: 0 });
+        console.log("updated quantity of " + itemId + " " + categoryName);
+      }
+    });
+  });
+}
 async function main(auth) {
   //const auth = await authorize();
   //readProductsListSheet(auth);
   //updateDataToFirebase(auth);
-  deleteOrders();
-  deleteOrderItems();
+  //   deleteOrders();
+  //   deleteOrderItems();
+  updateItemsQuantityAndImage();
 }
 async function addCategories(auth) {
   for (let key in CATEGORIES_MAP) {
